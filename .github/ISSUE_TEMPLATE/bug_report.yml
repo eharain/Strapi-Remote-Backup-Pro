@@ -1,0 +1,63 @@
+name: Bug report
+description: Something behaved incorrectly
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not paste admin credentials, JWTs, or API tokens. Logs are
+        redacted at the logger, but check before pasting.
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where did it happen?
+      options: [CLI, Desktop app, Background service, Both CLI and desktop]
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: "`strapi-backup --version`, or Help → About in the desktop app"
+    validations: { required: true }
+  - type: dropdown
+    id: strapi
+    attributes:
+      label: Strapi version of the target instance
+      options: ["v5", "v4", "Not sure"]
+    validations: { required: true }
+  - type: input
+    id: strapi-exact
+    attributes:
+      label: Exact Strapi version if known
+      placeholder: "5.4.2"
+    validations: { required: false }
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [Windows, macOS, Linux]
+    validations: { required: true }
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect instead?
+    validations: { required: true }
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Include the command you ran, with credentials removed.
+    validations: { required: true }
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      render: shell
+    validations: { required: false }
+  - type: checkboxes
+    id: restore
+    attributes:
+      label: Did this involve a restore?
+      description: Restore writes to a live CMS, so these reports are triaged first.
+      options:
+        - label: This happened during a restore

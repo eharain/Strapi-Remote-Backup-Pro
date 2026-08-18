@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/eharain/strapi-remote-backup-pro/security/advisories/new
+    about: Report privately. Do not open a public issue — see SECURITY.md.
+  - name: Commercial support
+    url: https://tech-style.co/contact.html
+    about: Tech Style Ltd
