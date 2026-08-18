@@ -4,7 +4,14 @@
        project files carry only PackageReference names. -->
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    <AvaloniaVersion>11.2.3</AvaloniaVersion>
+    <!-- 11.3.14 is the floor: earlier 11.x pulls Tmds.DBus.Protocol 0.20.0/0.21.2,
+         which GHSA-xrw6-gwf8-vvr9 flags as high severity. With NU1903 promoted to an
+         error by TreatWarningsAsErrors, dropping below that floor fails restore. -->
+    <AvaloniaVersion>11.3.20</AvaloniaVersion>
+    <!-- DataGrid releases on its own cadence and lags the core packages, so it does
+         not follow $(AvaloniaVersion). Its dependency on Avalonia is a minimum, not
+         a pin, so the newer core version above satisfies it. -->
+    <AvaloniaDataGridVersion>11.3.13</AvaloniaDataGridVersion>
   </PropertyGroup>
 
   <ItemGroup Label="Avalonia">
@@ -13,7 +20,7 @@
     <PackageVersion Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaDataGridVersion)" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
   </ItemGroup>
 
