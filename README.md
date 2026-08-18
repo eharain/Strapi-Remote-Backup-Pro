@@ -64,7 +64,10 @@ fit together, or [docs/dev/getting-started.md](docs/dev/getting-started.md) to b
 
 ## Status
 
-Early development. The structure is in place; features are being built out.
+Early development. The structure is in place; features are not yet implemented.
+
+[docs/dev/worksheet.md](docs/dev/worksheet.md) is the current, verified account of
+what works and what is outstanding.
 
 ## Licence
 

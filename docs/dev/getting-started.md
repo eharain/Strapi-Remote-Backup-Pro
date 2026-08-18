@@ -84,10 +84,14 @@ are stale. Never hand-edit the generated C# — see
 
 ## Where to start reading
 
-1. [../architecture/overview.md](../architecture/overview.md) — how the pieces fit
-2. [../adr](../adr) — why each piece is the way it is
-3. `apps/core/src/contracts` — the vocabulary everything else is written in
-4. `apps/core/src/strapi/contracts.ts` — the boundary v4/v5 differences stop at
+1. [worksheet.md](worksheet.md) — what is actually built, and what is next
+2. [../architecture/overview.md](../architecture/overview.md) — how the pieces fit
+3. [../adr](../adr) — why each piece is the way it is
+4. `apps/core/src/contracts` — the vocabulary everything else is written in
+5. `apps/core/src/strapi/contracts.ts` — the boundary v4/v5 differences stop at
+
+Note that the commands above describe the intended workflow. Several do not pass
+yet on a clean checkout — the worksheet's gate table records exactly which.
 
 ## Conventions
 
