@@ -1,0 +1,13 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="StrapiBackup.App.Views.SelectionView">
+  <!-- The content-type tree with per-type checkboxes, plus the relation-depth
+       control. This is the screen the desktop app exists for: expressing
+       "these types, these records, follow relations N deep" is painful as CLI
+       flags and obvious as a tree.
+
+       Changing depth re-runs the plan and updates the estimated record count
+       live, because depth 3 on an interlinked schema can quietly mean the whole
+       database and the user should see that before starting. -->
+  <TreeView />
+</UserControl>

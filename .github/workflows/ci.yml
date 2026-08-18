@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  core:
+    name: Engine
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.11'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  desktop:
+    name: Desktop
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - run: dotnet restore apps/desktop/StrapiBackup.sln
+      - run: dotnet build apps/desktop/StrapiBackup.sln -c Release --no-restore
+      - run: dotnet test apps/desktop/StrapiBackup.sln --no-build -c Release
+
+  contracts:
+    name: Contract drift
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.11'
+          cache: npm
+      - run: npm ci
+      - run: npm run schema:emit
+      # The generated schemas are committed so contract changes are visible in
+      # review. A diff here means someone changed a shared type without
+      # regenerating — which would ship as a runtime mismatch between the two
+      # languages. See docs/adr/0008-generated-contracts.md.
+      - name: Fail if generated contracts are stale
+        run: git diff --exit-code docs/api/schema
+
+  integration:
+    name: Integration (v4 + v5)
+    runs-on: ubuntu-latest
+    # Slow — real Strapi containers. Not gating every pull request, but the only
+    # tests that catch an admin-API change on Strapi's side.
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.11'
+          cache: npm
+      - run: npm ci
+      - run: npm run sandbox:up
+      - run: npm run test:integration -w strapi-remote-backup-pro
+      - if: always()
+        run: npm run sandbox:down

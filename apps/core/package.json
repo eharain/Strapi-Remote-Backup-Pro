@@ -1,0 +1,123 @@
+{
+  "name": "strapi-remote-backup-pro",
+  "version": "0.1.0",
+  "description": "Back up and restore any Strapi v4/v5 instance remotely over the admin API — no plugin installed in Strapi. CLI, local API, and pluggable backup destinations.",
+  "license": "MIT",
+  "author": {
+    "name": "Ejaz Hussain Arain",
+    "email": "hello@tech-style.co",
+    "url": "https://tech-style.co/"
+  },
+  "contributors": [
+    {
+      "name": "Tech Style Ltd",
+      "email": "hello@tech-style.co",
+      "url": "https://tech-style.co/"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eharain/strapi-remote-backup-pro.git",
+    "directory": "apps/core"
+  },
+  "bugs": {
+    "url": "https://github.com/eharain/strapi-remote-backup-pro/issues",
+    "email": "hello@tech-style.co"
+  },
+  "homepage": "https://tech-style.co/products.html#remote-backup",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "strapi",
+    "strapi-v4",
+    "strapi-v5",
+    "backup",
+    "restore",
+    "remote-backup",
+    "strapi-backup",
+    "disaster-recovery",
+    "migration",
+    "export",
+    "import",
+    "snapshot",
+    "scheduled-backup",
+    "s3",
+    "azure-blob",
+    "google-drive",
+    "dropbox",
+    "onedrive",
+    "sftp",
+    "ftp",
+    "headless-cms",
+    "cli",
+    "no-plugin"
+  ],
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "bin": {
+    "strapi-backup": "./bin/strapi-backup.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "THIRD-PARTY-NOTICES.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx watch src/cli/index.ts",
+    "serve": "tsx src/cli/index.ts serve",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src test",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:integration": "vitest run --dir test/integration",
+    "schema:emit": "tsx ../../build/scripts/emit-json-schema.ts",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.699.0",
+    "@aws-sdk/lib-storage": "^3.699.0",
+    "@azure/storage-blob": "^12.26.0",
+    "archiver": "^7.0.1",
+    "basic-ftp": "^5.0.5",
+    "commander": "^12.1.0",
+    "croner": "^9.0.0",
+    "dropbox": "^10.34.0",
+    "fastify": "^5.2.0",
+    "googleapis": "^144.0.0",
+    "p-limit": "^6.2.0",
+    "pino": "^9.5.0",
+    "pino-pretty": "^13.0.0",
+    "ssh2-sftp-client": "^11.0.0",
+    "undici": "^7.2.0",
+    "yauzl": "^3.2.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.3",
+    "@types/node": "^22.10.2",
+    "@types/ssh2-sftp-client": "^9.0.4",
+    "@types/yauzl": "^2.10.3",
+    "eslint": "^9.17.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0",
+    "vitest": "^2.1.8",
+    "zod-to-json-schema": "^3.24.1"
+  }
+}

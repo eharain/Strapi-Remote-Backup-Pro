@@ -1,0 +1,42 @@
+# ---- build output ----
+artifacts/
+dist/
+build/out/
+*.tsbuildinfo
+
+# ---- node ----
+node_modules/
+.pnpm-store/
+npm-debug.log*
+pnpm-debug.log*
+.eslintcache
+coverage/
+.vitest/
+
+# ---- dotnet ----
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+.vs/
+*.binlog
+
+# ---- packaging ----
+build/installers/**/out/
+build/vendor/node/
+apps/core/npm/*/bin/
+
+# ---- local secrets & state ----
+.env
+.env.*
+!.env.example
+*.local.json
+profiles/
+*.sbk
+*.sbk.zip
+
+# ---- os ----
+.DS_Store
+Thumbs.db

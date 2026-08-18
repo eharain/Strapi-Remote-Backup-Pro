@@ -1,0 +1,28 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="StrapiBackup.App.Views.AboutView">
+  <!-- Attribution, licence, and third-party notices.
+
+       Values are read from assembly metadata (set once in Directory.Build.props)
+       rather than typed here, so the About screen cannot disagree with the
+       installer or the file properties.
+
+       The licence and notice files are copied next to the executable at build
+       time; this view links to them rather than reproducing their text, because
+       the copies on disk are the ones that satisfy the redistribution
+       obligation. -->
+  <StackPanel Margin="32" Spacing="8">
+    <TextBlock Name="ProductName"  FontSize="20" FontWeight="SemiBold" />
+    <TextBlock Name="VersionText"  Opacity="0.7" />
+    <TextBlock Name="AuthorText" />
+    <TextBlock Name="CompanyText" />
+    <TextBlock Name="RegistrationText" Opacity="0.7" FontSize="12" />
+    <TextBlock Name="CopyrightText" Opacity="0.7" FontSize="12" />
+    <TextBlock Name="TrademarkText" TextWrapping="Wrap" Opacity="0.7" FontSize="12" />
+    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,12,0,0">
+      <Button Name="OpenLicence" Content="Licence" />
+      <Button Name="OpenNotices" Content="Third-party notices" />
+      <Button Name="OpenWebsite" Content="tech-style.co" />
+    </StackPanel>
+  </StackPanel>
+</UserControl>

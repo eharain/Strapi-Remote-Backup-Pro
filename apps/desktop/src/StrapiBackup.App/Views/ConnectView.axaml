@@ -1,0 +1,11 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="StrapiBackup.App.Views.ConnectView">
+  <!-- URL, email, password. Probes on submit and reports the detected Strapi
+       version, so the user learns immediately whether this instance is reachable
+       and whether the credentials can read schemas — before choosing anything.
+
+       The password field is never bound to persisted state. It goes to the
+       engine, is exchanged for a JWT, and is dropped. -->
+  <StackPanel />
+</UserControl>

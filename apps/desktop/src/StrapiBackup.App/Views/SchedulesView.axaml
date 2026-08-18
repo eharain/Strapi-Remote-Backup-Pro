@@ -1,0 +1,7 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="StrapiBackup.App.Views.SchedulesView">
+  <!-- Recurring backups, and the control for installing the background service
+       that runs them when the app is closed. -->
+  <Grid />
+</UserControl>

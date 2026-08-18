@@ -1,0 +1,8 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="StrapiBackup.App.Views.TargetsView">
+  <!-- Configure destinations. Each has a Test button that runs a real round-trip
+       before it is ever trusted with a scheduled backup — a destination whose
+       credentials expired is otherwise discovered on the night it was needed. -->
+  <Grid />
+</UserControl>

@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish-core:
+    name: Publish engine to npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.11'
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm run build
+      - run: npm publish -w strapi-remote-backup-pro
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  package-desktop:
+    name: Package desktop (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.11'
+      # The installer bundles a pinned Node runtime. An installer that assumes
+      # the user already has Node forfeits the reason for shipping a native app
+      # at all — see docs/adr/0004-sidecar-contract.md.
+      - name: Bundle engine and runtime
+        run: echo "build/scripts/bundle-runtime — not yet implemented"
+      - name: Build installer
+        run: echo "build/scripts/package-desktop — not yet implemented"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: artifacts/installers

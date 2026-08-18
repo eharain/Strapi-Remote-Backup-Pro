@@ -1,0 +1,15 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="StrapiBackup.App.Views.MainWindow"
+        Title="Strapi Remote Backup Pro"
+        Width="1100" Height="720"
+        MinWidth="900" MinHeight="600">
+
+  <!-- Shell: a left rail of destinations between the steps of the workflow,
+       with the active step hosted on the right. -->
+  <Grid ColumnDefinitions="220,*">
+    <Border Grid.Column="0" />
+    <ContentControl Grid.Column="1" Name="StepHost" />
+  </Grid>
+
+</Window>

@@ -1,0 +1,18 @@
+{
+  "name": "strapi-remote-backup-pro-workspace",
+  "private": true,
+  "description": "Monorepo root. The publishable package is apps/core.",
+  "workspaces": ["apps/core"],
+  "scripts": {
+    "build": "npm run build -w strapi-remote-backup-pro",
+    "test": "npm run test -w strapi-remote-backup-pro",
+    "lint": "npm run lint -w strapi-remote-backup-pro",
+    "typecheck": "npm run typecheck -w strapi-remote-backup-pro",
+    "build:desktop": "dotnet build apps/desktop/StrapiBackup.sln -c Release",
+    "test:desktop": "dotnet test apps/desktop/StrapiBackup.sln",
+    "sandbox:up": "docker compose -f tools/sandbox/docker-compose.yml up -d",
+    "sandbox:down": "docker compose -f tools/sandbox/docker-compose.yml down -v",
+    "schema:emit": "npm run schema:emit -w strapi-remote-backup-pro"
+  },
+  "engines": { "node": ">=20.11" }
+}

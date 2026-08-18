@@ -1,0 +1,43 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <!-- Assembly metadata. These values surface in file properties, the installer,
+       and the app's About screen, so they are declared once here rather than
+       repeated per project. -->
+  <PropertyGroup>
+    <Product>Strapi Remote Backup Pro</Product>
+    <Authors>Ejaz Hussain Arain</Authors>
+    <Company>Tech Style Ltd</Company>
+    <Copyright>Copyright © 2026 Ejaz Hussain Arain. All rights reserved.</Copyright>
+    <Version>0.1.0</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://tech-style.co/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/eharain/strapi-remote-backup-pro</RepositoryUrl>
+  </PropertyGroup>
+
+  <!-- The licence and notices travel with every build output. The installer is a
+       redistribution of bundled third-party code, so shipping these is a licence
+       obligation rather than a nicety — see THIRD-PARTY-NOTICES.md. -->
+  <ItemGroup Condition="'$(OutputType)' == 'Exe' or '$(OutputType)' == 'WinExe'">
+    <Content Include="$(MSBuildThisFileDirectory)..\..\LICENSE" CopyToOutputDirectory="PreserveNewest" Link="LICENSE" />
+    <Content Include="$(MSBuildThisFileDirectory)..\..\NOTICE" CopyToOutputDirectory="PreserveNewest" Link="NOTICE" />
+    <Content Include="$(MSBuildThisFileDirectory)..\..\THIRD-PARTY-NOTICES.md" CopyToOutputDirectory="PreserveNewest" Link="THIRD-PARTY-NOTICES.md" />
+  </ItemGroup>
+
+  <!-- Build output is kept out of the source tree so `artifacts/` is the single
+       place to clean and the single thing CI uploads. -->
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts\dotnet\$(MSBuildProjectName)\</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)..\..\artifacts\obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+</Project>

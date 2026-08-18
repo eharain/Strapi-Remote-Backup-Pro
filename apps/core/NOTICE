@@ -1,0 +1,28 @@
+Strapi Remote Backup Pro
+========================
+
+Copyright (c) 2026 Ejaz Hussain Arain. All rights reserved.
+Licensed under the MIT License. See LICENSE.
+
+Author
+------
+Ejaz Hussain Arain
+hello@tech-style.co
+
+Published by
+------------
+Tech Style Ltd
+https://tech-style.co/
+Registered in England & Wales · Company No. 11101491
+
+Attribution
+-----------
+This notice, the copyright line above, and the MIT licence text must be
+retained in all copies and substantial portions of the Software, including
+in the desktop installers and the published npm package.
+
+Third-party components
+----------------------
+The desktop installers redistribute the Node.js runtime and third-party
+libraries. Their licences and notices are reproduced in
+THIRD-PARTY-NOTICES.md, which must ship alongside the installed application.

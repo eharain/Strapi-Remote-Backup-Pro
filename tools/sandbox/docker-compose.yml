@@ -1,0 +1,44 @@
+# Throwaway Strapi instances for development and integration tests.
+#
+# Two of them, because the whole v4/v5 dialect split is untestable against one.
+# Both are seeded with a schema that includes the cases that actually break
+# things: circular relations, dynamic zones, nested repeatable components,
+# several locales, and a mix of draft and published entries.
+#
+# Everything here is disposable. `npm run sandbox:down` removes the volumes.
+
+services:
+  strapi-v5:
+    image: strapi/strapi:5
+    environment:
+      DATABASE_CLIENT: sqlite
+      DATABASE_FILENAME: .tmp/data.db
+      APP_KEYS: sandbox-key-1,sandbox-key-2
+      API_TOKEN_SALT: sandbox-token-salt
+      ADMIN_JWT_SECRET: sandbox-admin-jwt
+      JWT_SECRET: sandbox-jwt
+      TRANSFER_TOKEN_SALT: sandbox-transfer-salt
+    ports:
+      - "1337:1337"
+    volumes:
+      - v5-data:/srv/app/.tmp
+      - ./seed/v5:/srv/app/src/api:ro
+
+  strapi-v4:
+    image: strapi/strapi:4
+    environment:
+      DATABASE_CLIENT: sqlite
+      DATABASE_FILENAME: .tmp/data.db
+      APP_KEYS: sandbox-key-1,sandbox-key-2
+      API_TOKEN_SALT: sandbox-token-salt
+      ADMIN_JWT_SECRET: sandbox-admin-jwt
+      JWT_SECRET: sandbox-jwt
+    ports:
+      - "1338:1337"
+    volumes:
+      - v4-data:/srv/app/.tmp
+      - ./seed/v4:/srv/app/src/api:ro
+
+volumes:
+  v5-data:
+  v4-data:
