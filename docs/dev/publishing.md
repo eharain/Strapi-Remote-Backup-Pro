@@ -33,11 +33,19 @@ Strapi's admin API from outside, and *not being a plugin* is the entire premise 
 see [ADR 0001](../adr/0001-remote-only-via-admin-api.md). Submitting it would be
 rejected, correctly.
 
-### The companion-plugin option
+### The companion-plugin option — agreed, deferred
+
+**Status: deferred by decision, not rejected.** Out of scope until the core tool
+works. Recorded here so the reasoning survives until it is picked up.
 
 There is a legitimate way onto the Marketplace that does not compromise the
 premise: a **small, optional companion plugin** — published separately — that
 contains none of the backup engine and is never required for the tool to work.
+
+Its primary purpose is reach: a Marketplace listing puts this tool in front of
+Strapi developers who would otherwise never encounter it, and the plugin becomes
+the channel that promotes the standalone app. A minimal in-Strapi backup capability
+is the hook that earns the listing.
 
 It would be worth building for a reason beyond discoverability. It solves a real
 limitation already documented in
