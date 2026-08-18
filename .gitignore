@@ -40,3 +40,6 @@ profiles/
 # ---- os ----
 .DS_Store
 Thumbs.db
+
+# Git Bash on Windows drops these next to the working directory on a crash.
+*.stackdump
