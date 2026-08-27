@@ -67,6 +67,34 @@ rediscovered.
 Conventional commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`.
 Explain why in the body, not just what.
 
+## Attribution
+
+A commit carries one author: the person who made it. No assistant, bot, or tool is
+ever credited as an author or co-author — no `Co-Authored-By:` trailer naming a
+non-human, no "generated with" line, and no tool name in the message.
+
+This is enforced rather than merely asked for. Three hooks live in
+[.githooks](.githooks) and are versioned with the repository, so the protection
+travels with a fresh clone:
+
+| Hook | What it checks |
+| --- | --- |
+| `pre-commit` | author and committer identity, staged file names, staged file content |
+| `commit-msg` | the commit message |
+| `pre-push` | every commit being pushed — identity, message, file names, added lines |
+
+`npm install` switches them on through the `prepare` script. To enable them by
+hand, or to confirm they are on:
+
+```bash
+git config core.hooksPath .githooks
+git config --get core.hooksPath      # -> .githooks
+```
+
+`pre-push` re-checks the whole history of what it is sending, so a commit made
+with `--no-verify`, or one imported by cherry-pick or rebase, is still caught
+before it can reach a remote.
+
 ## Licence
 
 Contributions are accepted under the MIT licence

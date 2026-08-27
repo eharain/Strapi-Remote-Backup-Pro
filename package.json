@@ -4,6 +4,7 @@
   "description": "Monorepo root. The publishable package is apps/core.",
   "workspaces": ["apps/core"],
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks || exit 0",
     "build": "npm run build -w strapi-remote-backup-pro",
     "test": "npm run test -w strapi-remote-backup-pro",
     "lint": "npm run lint -w strapi-remote-backup-pro",
