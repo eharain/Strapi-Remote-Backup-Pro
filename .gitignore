@@ -14,8 +14,12 @@ coverage/
 .vitest/
 
 # ---- dotnet ----
-bin/
-obj/
+# Scoped to the desktop app deliberately. A bare `bin/` also matches
+# apps/core/bin/, which holds the CLI entry point package.json declares under
+# "bin" — ignoring it publishes an npm package whose command is not in the
+# tarball, and `npx strapi-remote-backup-pro` fails on the first run.
+apps/desktop/**/bin/
+apps/desktop/**/obj/
 [Dd]ebug/
 [Rr]elease/
 *.user
