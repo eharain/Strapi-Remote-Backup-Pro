@@ -7,8 +7,9 @@ does not accept it.
 
 | Channel | What ships | Status |
 |---|---|---|
-| GitHub | source, issues, releases | repo not created yet |
+| GitHub | source, issues, releases | public, `main` pushed |
 | npm | `strapi-remote-backup-pro` — the engine and CLI | not published |
+| One-command installer | [`build/installers/bootstrap`](../../build/installers/bootstrap/) — `curl \| sh` and `irm \| iex` | written, tested on Windows |
 | GitHub Releases | desktop installers per platform | needs the bundling step |
 | tech-style.co | product page and download links | page drafted |
 | Strapi Marketplace | — | **not eligible — see below** |
@@ -68,22 +69,11 @@ own ADR before anyone builds it.
 
 ## GitHub
 
-The repository does not exist yet. It must be created before anything can be
-pushed — creating it requires the `gh` CLI or a personal access token, neither of
-which is available in this environment.
+The repository exists and `main` is public — confirmed 2026-08-27, both through
+the API and by fetching the source tarball, which is the path the bootstrap
+installer falls back to while there is no npm release.
 
-```bash
-# once, with gh installed and authenticated
-gh repo create eharain/strapi-remote-backup-pro --public \
-  --description "Back up and restore any Strapi v4/v5 instance remotely — no plugin required" \
-  --homepage "https://tech-style.co/"
-
-# or create it empty through the web UI, then
-git remote add origin https://github.com/eharain/strapi-remote-backup-pro.git
-git push -u origin main
-```
-
-Repository settings worth applying once it exists:
+Repository settings worth applying:
 
 - Topics: `strapi`, `strapi-v5`, `strapi-v4`, `backup`, `restore`, `cli`,
   `dotnet`, `avalonia`, `disaster-recovery`

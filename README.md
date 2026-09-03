@@ -64,7 +64,14 @@ fit together, or [docs/dev/getting-started.md](docs/dev/getting-started.md) to b
 
 ## Status
 
-Early development. The structure is in place; features are not yet implemented.
+Early, but the engine works. Backing up a Strapi **v5** instance and restoring it
+into another one runs end to end and is covered by a round-trip test against two
+live instances — content, components, dynamic zones, relations, draft/published
+pairs and media.
+
+Not yet: the desktop app is unimplemented, only the local destination works of
+the eight listed above, and the v4 dialect is written but has never been run
+against a v4 instance.
 
 [docs/dev/worksheet.md](docs/dev/worksheet.md) is the current, verified account of
 what works and what is outstanding.

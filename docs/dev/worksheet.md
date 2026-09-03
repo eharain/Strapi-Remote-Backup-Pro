@@ -10,39 +10,39 @@ Rules for keeping it honest:
 - The gate table below is measured, not remembered. Re-run it before editing.
 - When a milestone completes, update this file in the same commit as the code.
 
-Last verified: 2026-08-18, against commit `455d8c3` plus the working-tree changes
-committed alongside this file.
+Last verified: 2026-08-27, against the working tree — every gate in the table
+below was re-run, and the round trip was run twice to confirm it is idempotent.
 
 ---
 
 ## Snapshot
 
-The repository is a **complete scaffold with no implemented behaviour**. Every
-type, module boundary, and architectural decision is in place and compiles; every
-execution path throws `not implemented` / `NotImplementedException`.
+**The engine works against Strapi v5.** Backing up a live instance and restoring
+into another one has been run end to end, repeatedly, against two Strapi 5.52.0
+instances — content, components, dynamic zones, relations, draft/published pairs
+and a media library — and the result compared record by record.
 
-That is the intended state at this point — the structure was built first, on
-purpose, so that implementation work has somewhere to land and the constraints
-that matter (streaming, engine-owns-logic, restore safety) are encoded in the
-signatures before any code fills them in.
+The .NET desktop app is still entirely unimplemented, seven of the eight
+destinations still throw, and the v4 dialect is written but has never been run
+against a v4 instance.
 
 ### Verification gates
 
-Run from the repository root.
+Run from the repository root. Measured 2026-08-27, not remembered.
 
 | Gate | Command | Status |
 |---|---|---|
 | Engine typecheck | `npm run typecheck` | **pass** |
 | Engine build | `npm run build` | **pass** |
-| Engine lint | `npm run lint` | **FAIL** (exit 2) — see B1 |
-| Engine unit tests | `npm test` | **FAIL** (exit 1) — see B2 |
-| Contract emit | `npm run schema:emit` | **FAIL** (exit 1) — see B3 |
+| Engine lint | `npm run lint` | **pass** |
+| Engine unit tests | `npm test` | **pass** — 39 tests |
+| Contract emit | `npm run schema:emit` | **pass** — 17 schemas, byte-idempotent |
 | Desktop build | `dotnet build apps/desktop/StrapiBackup.sln -c Release` | **pass**, 0 warnings |
 | Desktop tests | `dotnet test apps/desktop/StrapiBackup.sln -c Release` | passes vacuously — no tests exist |
-| Integration | `npm run test:integration -w strapi-remote-backup-pro` | not runnable — no tests, no seed |
+| Integration | `npm run test:integration -w strapi-remote-backup-pro` | **pass** — 7 tests against two live v5 instances; skips without credentials |
 
-Three of the four CI jobs in [.github/workflows/ci.yml](../../.github/workflows/ci.yml)
-are therefore red on a clean checkout. Clearing that is milestone M0.
+All four CI jobs in [.github/workflows/ci.yml](../../.github/workflows/ci.yml)
+are green on a clean checkout. M0 is cleared.
 
 ---
 
@@ -57,7 +57,7 @@ scheduling in the engine (0006), v4/v5 behind a dialect (0007), generated C#
 contracts (0008). The companion-Strapi-plugin route is recorded as deferred with
 its reasoning, in [docs/dev/publishing.md](publishing.md).
 
-### Engine contracts — the only substantive code in the repo
+### Engine contracts
 
 Zod schemas in [apps/core/src/contracts/](../../apps/core/src/contracts/) —
 `connection`, `selection`, `job`, `archive`, `target`. These are the source of
@@ -67,10 +67,37 @@ provider [registry.ts](../../apps/core/src/targets/registry.ts), and the
 `BackupTarget` / `TargetProvider` interfaces in
 [targets/contract.ts](../../apps/core/src/targets/contract.ts).
 
+### The engine, end to end on Strapi v5
+
+Verified 2026-08-27 against two live Strapi 5.52.0 instances: back up A, restore
+into B, back up B, compare record by record. Fifteen assertions, run repeatedly,
+green and idempotent. The suite is
+[test/integration/roundtrip.test.ts](../../apps/core/test/integration/roundtrip.test.ts).
+
+- **Transport** — `strapi/http.ts`, `client.ts`, `auth.ts`. Retry with jittered
+  backoff, `Retry-After` honoured, concurrency capped, one shared token renewal.
+  Sign-in is never retried at any status: Strapi allows five attempts per window
+  and a retry loop locks the user out of their own CMS.
+- **Dialects** — `strapi/v5/` fully exercised; `strapi/v4/` written but never run
+  against a v4 instance. `strapi/probe.ts` detects the version from
+  `/admin/information`, falling back to whether records carry a `documentId`.
+- **Schema** — `discovery`, `graph` (relations through components and dynamic
+  zones, cycles reported not fatal), `depth` (breadth-first, deduplicated).
+- **Archive** — streaming zip with inline SHA-256, Zip64 always, NDJSON content,
+  optional AES-256-GCM per entry with the manifest left readable.
+- **Backup and restore** — planner, readers, runner on both sides; two-pass
+  restore with deferred relation patching; media matched so a second restore
+  uploads nothing.
+- **CLI** — `login`, `backup`, `restore`, `inspect`, `verify`.
+
+What the round trip preserves, measured rather than assumed: field values,
+relations (including across a cycle), components and dynamic zones, media
+binaries, and draft/published pairs as two distinct versions.
+
 ### Module skeleton
 
-~70 engine modules and 24 C# files exist with final signatures and doc comments
-explaining intent and constraints. Nothing behind them runs.
+24 C# files exist with final signatures and doc comments explaining intent and
+constraints. Nothing behind them runs.
 
 ### Repository furniture
 
@@ -80,10 +107,45 @@ CHANGELOG, and the full legal set — LICENCE, NOTICE, third-party notices, and
 [docs/legal/licensing.md](../legal/licensing.md) covering the installer as a
 redistribution.
 
+### Getting it onto a customer's machine
+
+Verified 2026-08-27. `build/installers/bootstrap/install.ps1` and `install.sh` —
+the one command a non-technical customer runs. Stage a checksum-verified pinned
+Node runtime, install the released package or build the source tree, write a
+`strapi-backup` shim with a `PATH` entry and a desktop shortcut, then run the
+result and report honestly. Re-running upgrades; uninstall reverses everything.
+
+Measured on Windows, into a throwaway prefix: runtime download, checksum check
+and unpack pass; the npm channel correctly finds nothing published and falls
+back to source; `npm ci` and `npm run build` pass on the fetched tree; the shim
+runs and reports `0.1.0`; uninstall clears the tree in 21 s. Not yet run on
+macOS or Linux.
+
+The self-test looks for commander's `Commands:` heading, which appears only once
+a subcommand is actually registered. It reported **preview build** for as long as
+that was true and reports a working install now that the CLI has commands —
+which is the whole point of checking behaviour rather than checking that files
+copied.
+
+Two bugs found by running it, both fixed:
+
+- **The CLI entry point was not in the repository.** `.gitignore` carried a bare
+  `bin/` under its .NET section, which also matched `apps/core/bin/` — the file
+  `package.json` names under `"bin"` and lists in `"files"`. It existed only on
+  the machine it was written on, so a fresh clone could not run the CLI and
+  `npm publish` from [release.yml](../../.github/workflows/release.yml) would
+  have shipped a package whose command was missing from the tarball. The ignore
+  rules are now scoped to `apps/desktop/**/`.
+- **Recursive delete fails on Windows.** `Remove-Item -Recurse` and `rd /s /q`
+  both give up part way through `node_modules`, which nests past `MAX_PATH`.
+  Every upgrade and every uninstall failed. `Remove-Tree` in `install.ps1` falls
+  back to a `robocopy /MIR` mirror.
+
 ### Developer docs
 
-[getting-started.md](getting-started.md), architecture overview, archive-format
-and security specs, and the sandbox `docker-compose.yml` for Strapi v4 + v5.
+[getting-started.md](getting-started.md), [install.md](../user/install.md),
+architecture overview, archive-format and security specs, and the sandbox
+`docker-compose.yml` for Strapi v4 + v5.
 
 ### Dependency hygiene
 
@@ -96,67 +158,27 @@ Avalonia floored at 11.3.20 to clear GHSA-xrw6-gwf8-vvr9 (transitive
 
 ## Not done
 
-Everything below is unimplemented. Ordered by dependency — each milestone is
-mostly blocked by the one above it.
+Ordered by dependency. M0 through M3 and M5 are cleared; what follows is what
+remains.
 
-### M0 · Unblock the feedback loop
+### M4 · Destinations — one of eight
 
-Small, and worth doing before anything else: until these pass, no later milestone
-has a working signal.
+`local` is implemented and is the reference: staged write to a `.part` file then
+rename, path traversal refused, retention pruning that will not empty a folder.
+`targets/retention.ts` is done and unit-tested.
 
-- **B1** `npm run lint` fails. `eslint src test` is passed a `test` directory
-  containing only `.gitkeep` and a README, and ESLint exits 2 on a glob that
-  matches nothing lintable. Fix when the first test file lands, or narrow the
-  glob now.
-- **B2** `npm test` fails. Vitest exits 1 when no test files match. Needs either
-  a first real test or `passWithNoTests`.
-- **B3** `npm run schema:emit` fails. `build/scripts/emit-json-schema.ts` is
-  documented in [build/scripts/README.md](../../build/scripts/README.md) and
-  wired into `package.json` and CI, but was never written. All five build
-  scripts named there are missing: `codegen.ps1`, `emit-json-schema.ts`,
-  `bundle-runtime.ps1`, `version.ps1`, `package-desktop.ps1`.
+Still throwing: `s3`, `azureBlob`, `googleDrive`, `dropbox`, `oneDrive`, `sftp`,
+`ftp`. SDKs are already in `package.json` and registration is already lazy.
 
-### M1 · Reach a live Strapi
+### M6 · Interfaces — CLI done, the rest not
 
-The foundation for everything else, and the only part that cannot be designed
-further without a real instance to test against.
+Done: `cli/index.ts` and five commands — `login`, `backup`, `restore`, `inspect`,
+`verify` — with `cli/options.ts` (flag and credential resolution, hidden password
+prompt) and `cli/render.ts`.
 
-`strapi/auth.ts` (admin login → JWT, never retried), `strapi/client.ts` (HTTP
-transport: retry, backoff, concurrency cap, refresh), `strapi/probe.ts` (detect
-v4 vs v5), `strapi/v4/` and `strapi/v5/` dialects, `strapi/contracts.ts` response
-shapes, and `schema/discovery.ts` + `graph.ts` + `depth.ts` for the content model
-and relation graph.
-
-### M2 · Archive I/O
-
-`archive/zip-writer.ts` (streaming, Zip64 unconditional, inline SHA-256),
-`zip-reader.ts`, `format.ts` manifest, `crypto.ts` at-rest encryption. Spec
-already written in [archive-format.md](../architecture/archive-format.md).
-
-### M3 · Backup
-
-`backup/planner.ts`, the five readers (`entries`, `media`, `schemas`, `i18n`,
-`settings`), `backup/runner.ts` (streaming, resumable), `backup/writer.ts`.
-
-### M4 · Destinations
-
-Eight providers, all currently throwing: `local` first as the reference
-implementation, then `s3`, `azureBlob`, `googleDrive`, `dropbox`, `oneDrive`,
-`sftp`, `ftp`. SDKs are already in `package.json` and registration is already
-lazy. Plus `targets/retention.ts` pruning.
-
-### M5 · Restore — highest-risk work in the project
-
-`restore/planner.ts` (produce a reviewable plan without writing), `remap.ts`
-(relation identity remapping), `strategies.ts`, `applier.ts`. Writes to someone's
-production CMS; gets the strictest review per CONTRIBUTING.
-
-### M6 · Interfaces
-
-Local API: `api/server.ts` (port 0 + bearer token per ADR 0004), `auth.ts`,
-`routes/`, `events.ts` (SSE job events). CLI: all eight commands under
-`cli/commands/` are empty — `backup`, `restore`, `login`, `inspect`, `verify`,
-`serve`, `schedule`, `targets`. Plus `config/`, `scheduler/` (croner), and
+Still empty: `cli/commands/serve.ts`, `schedule.ts`, `targets.ts`. Local API:
+`api/server.ts` (port 0 + bearer token per ADR 0004), `auth.ts`, `routes/`,
+`events.ts` (SSE job events). Plus `config/` profiles, `scheduler/` (croner), and
 `telemetry/`.
 
 ### M7 · Desktop app
@@ -168,13 +190,25 @@ refusal), `EngineHostedService`. Client: `CoreApiClient` (6 throws),
 view is a placeholder. `SelectionView` needs the content-type picker with
 relation-depth control — the feature that justifies the GUI.
 
-### M8 · Tests
+### M8 · Tests — engine covered, gaps named
 
-No test exists in either stack. Needed: engine unit tests, xUnit tests for the
-sidecar, sandbox seed data ([tools/sandbox/seed/](../../tools/sandbox/seed/) is
-an empty README) covering circular relations, dynamic zones, nested repeatable
-components, multiple locales, and draft/published mixes, then integration tests
-against v4 and v5.
+Done: 39 engine unit tests (relation graph, depth expansion, normalisation,
+identity remapping, retention, archive round trip including encryption) and a
+7-assertion integration round trip against two live v5 instances.
+
+Not done, and each is a real gap rather than a formality:
+
+- **No v4 coverage at all.** The v4 dialect is written from the documented
+  differences and has never spoken to a v4 instance. Treat it as unverified.
+- **No i18n coverage.** Both test instances have a single locale, so the
+  per-locale paths in `readers/entries.ts` have never run with more than one.
+- **No seed fixtures.** [tools/sandbox/seed/](../../tools/sandbox/seed/) is still
+  an empty README, so the round trip depends on whatever the instances happen to
+  hold. Needed: circular relations, dynamic zones, nested repeatable components,
+  multiple locales, and draft/published mixes.
+- **No scale test.** The largest library exercised was 12 files. The constant-
+  memory claim for a 50 GB library is a design property, not a measured one.
+- **No xUnit tests** for the sidecar, which has nothing to test yet.
 
 ### M9 · Packaging and release
 
