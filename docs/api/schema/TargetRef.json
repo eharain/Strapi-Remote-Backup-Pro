@@ -1,0 +1,58 @@
+{
+  "$ref": "#/definitions/TargetRef",
+  "definitions": {
+    "TargetRef": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "local",
+            "s3",
+            "azureBlob",
+            "googleDrive",
+            "dropbox",
+            "oneDrive",
+            "sftp",
+            "ftp"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "settings": {
+          "type": "object",
+          "additionalProperties": {},
+          "default": {}
+        },
+        "secretRef": {
+          "type": "string"
+        },
+        "retention": {
+          "type": "object",
+          "properties": {
+            "keepLast": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            },
+            "keepDays": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "name"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

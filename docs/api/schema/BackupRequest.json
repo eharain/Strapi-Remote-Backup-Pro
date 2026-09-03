@@ -1,0 +1,210 @@
+{
+  "$ref": "#/definitions/BackupRequest",
+  "definitions": {
+    "BackupRequest": {
+      "type": "object",
+      "properties": {
+        "connection": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "credentials": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "admin"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "password": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "email",
+                    "password"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "const": "apiToken"
+                    },
+                    "token": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "token"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "insecureTls": {
+              "type": "boolean",
+              "default": false
+            },
+            "requestTimeoutMs": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "default": 60000
+            },
+            "concurrency": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 32,
+              "default": 4
+            }
+          },
+          "required": [
+            "url",
+            "credentials"
+          ],
+          "additionalProperties": false
+        },
+        "selection": {
+          "type": "object",
+          "properties": {
+            "contentTypes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "documentIds": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "default": {}
+            },
+            "depth": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10,
+              "default": 1
+            },
+            "followUnselectedTypes": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeMedia": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeSchemas": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeDrafts": {
+              "type": "boolean",
+              "default": true
+            },
+            "locales": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "modifiedSince": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "local",
+                  "s3",
+                  "azureBlob",
+                  "googleDrive",
+                  "dropbox",
+                  "oneDrive",
+                  "sftp",
+                  "ftp"
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "settings": {
+                "type": "object",
+                "additionalProperties": {},
+                "default": {}
+              },
+              "secretRef": {
+                "type": "string"
+              },
+              "retention": {
+                "type": "object",
+                "properties": {
+                  "keepLast": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0
+                  },
+                  "keepDays": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "encryptionPassphrase": {
+          "type": "string",
+          "minLength": 8
+        },
+        "label": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "connection",
+        "selection",
+        "targets"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

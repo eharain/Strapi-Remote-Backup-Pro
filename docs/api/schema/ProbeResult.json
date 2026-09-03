@@ -1,0 +1,43 @@
+{
+  "$ref": "#/definitions/ProbeResult",
+  "definitions": {
+    "ProbeResult": {
+      "type": "object",
+      "properties": {
+        "reachable": {
+          "type": "boolean"
+        },
+        "version": {
+          "type": "string",
+          "enum": [
+            "v4",
+            "v5"
+          ]
+        },
+        "versionString": {
+          "type": "string"
+        },
+        "authenticated": {
+          "type": "boolean"
+        },
+        "canReadSchemas": {
+          "type": "boolean"
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      },
+      "required": [
+        "reachable",
+        "authenticated",
+        "canReadSchemas"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

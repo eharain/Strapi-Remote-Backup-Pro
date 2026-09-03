@@ -1,0 +1,16 @@
+{
+  "$ref": "#/definitions/JobState",
+  "definitions": {
+    "JobState": {
+      "type": "string",
+      "enum": [
+        "queued",
+        "running",
+        "succeeded",
+        "failed",
+        "cancelled"
+      ]
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,97 @@
+{
+  "$ref": "#/definitions/RestoreOptions",
+  "definitions": {
+    "RestoreOptions": {
+      "type": "object",
+      "properties": {
+        "selection": {
+          "type": "object",
+          "properties": {
+            "contentTypes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "documentIds": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "default": {}
+            },
+            "depth": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 10,
+              "default": 1
+            },
+            "followUnselectedTypes": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeMedia": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeSchemas": {
+              "type": "boolean",
+              "default": true
+            },
+            "includeDrafts": {
+              "type": "boolean",
+              "default": true
+            },
+            "locales": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "default": []
+            },
+            "modifiedSince": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false
+        },
+        "strategy": {
+          "type": "string",
+          "enum": [
+            "create",
+            "upsert",
+            "skip",
+            "replace"
+          ],
+          "default": "upsert"
+        },
+        "dryRun": {
+          "type": "boolean",
+          "default": false
+        },
+        "restoreMedia": {
+          "type": "boolean",
+          "default": true
+        },
+        "preservePublishState": {
+          "type": "boolean",
+          "default": true
+        },
+        "stopOnError": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "selection"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,80 @@
+{
+  "$ref": "#/definitions/Connection",
+  "definitions": {
+    "Connection": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "credentials": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "admin"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "kind",
+                "email",
+                "password"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "const": "apiToken"
+                },
+                "token": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "kind",
+                "token"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "insecureTls": {
+          "type": "boolean",
+          "default": false
+        },
+        "requestTimeoutMs": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "default": 60000
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32,
+          "default": 4
+        }
+      },
+      "required": [
+        "url",
+        "credentials"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
