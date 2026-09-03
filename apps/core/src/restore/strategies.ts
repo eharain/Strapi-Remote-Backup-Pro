@@ -13,9 +13,39 @@ export interface StrategyDecision {
 }
 
 export function decide(
-  _strategy: ConflictStrategy,
-  _existing: unknown | null,
+  strategy: ConflictStrategy,
+  existing: unknown | null,
   _incoming: unknown,
 ): StrategyDecision {
-  throw new Error('not implemented');
+  const present = existing !== null && existing !== undefined;
+
+  switch (strategy) {
+    case 'create':
+      // Deliberately blind to what is already there. Used when the destination
+      // is meant to end up with a second copy — cloning into a staging instance
+      // rather than reconciling with one.
+      return { action: 'create', reason: 'strategy is create: always insert' };
+
+    case 'upsert':
+      return present
+        ? { action: 'update', reason: 'a document with this identity already exists' }
+        : { action: 'create', reason: 'no document with this identity exists' };
+
+    case 'skip':
+      return present
+        ? { action: 'skip', reason: 'a document with this identity already exists' }
+        : { action: 'create', reason: 'no document with this identity exists' };
+
+    case 'replace':
+      return present
+        ? { action: 'replace', reason: 'existing document will be deleted and reinserted' }
+        : { action: 'create', reason: 'no document with this identity exists' };
+
+    default: {
+      // Exhaustiveness: a new strategy added to the contract lands here as a
+      // compile error rather than silently behaving like one of the others.
+      const exhaustive: never = strategy;
+      throw new Error(`Unknown conflict strategy: ${String(exhaustive)}`);
+    }
+  }
 }

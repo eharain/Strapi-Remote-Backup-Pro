@@ -85,7 +85,7 @@
     "lint": "eslint src test",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:integration": "vitest run --dir test/integration",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "schema:emit": "tsx ../../build/scripts/emit-json-schema.ts",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
   },
