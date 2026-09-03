@@ -6,6 +6,7 @@ assembled, kept separate so `apps/` stays free of packaging concerns.
 | Path | Purpose |
 |---|---|
 | `scripts/` | version stamping, contract codegen, Node runtime bundling |
+| `installers/bootstrap/` | the one command a customer runs — see its own README |
 | `installers/windows/` | WiX/MSI — bundles the app, the service, and the runtime |
 | `installers/macos/` | pkg and notarisation |
 | `installers/linux/` | deb and AppImage |
