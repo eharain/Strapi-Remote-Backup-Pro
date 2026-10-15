@@ -98,7 +98,7 @@ short enough to read through:
 
 ## For developers
 
-If you already have Node 20.11 or later and just want the command line, the
+If you already have Node 22.19 or later and just want the command line, the
 installer is unnecessary:
 
 ```bash

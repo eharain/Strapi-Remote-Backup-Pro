@@ -30,7 +30,7 @@ nothing to uninstall afterwards.
 npm install -g strapi-remote-backup-pro    # or use npx
 ```
 
-Requires Node.js 20.11 or later.
+Requires Node.js 22.19 or later.
 
 A desktop application with a visual content-type picker, scheduling, and a restore
 diff is available separately — it bundles this engine and needs no Node

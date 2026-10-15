@@ -4,7 +4,7 @@
 
 | | |
 |---|---|
-| Node | 20.11 or later — engine |
+| Node | 22.19 or later — engine |
 | .NET SDK | 10.0 — desktop app |
 | Docker | optional, for the sandbox Strapi instances |
 
