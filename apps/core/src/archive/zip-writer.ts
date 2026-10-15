@@ -14,8 +14,7 @@ import { createWriteStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import { PassThrough, Readable, Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import archiver from 'archiver';
-import type { Archiver } from 'archiver';
+import { ZipArchive } from 'archiver';
 import { contentEntryPath } from './format.js';
 import { deriveKey, encryptStream, newSalt } from './crypto.js';
 
@@ -35,7 +34,7 @@ export interface ArchiveWriterOptions {
 }
 
 export class ArchiveWriter {
-  private readonly zip: Archiver;
+  private readonly zip: ZipArchive;
   private readonly done: Promise<void>;
   private readonly written: EntryInfo[] = [];
   private open: OpenEntry | null = null;
@@ -49,7 +48,7 @@ export class ArchiveWriter {
     readonly salt: Buffer | null,
     compressionLevel: number,
   ) {
-    this.zip = archiver('zip', {
+    this.zip = new ZipArchive({
       zlib: { level: compressionLevel },
       forceZip64: true,
     });

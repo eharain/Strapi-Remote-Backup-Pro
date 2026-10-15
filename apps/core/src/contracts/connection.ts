@@ -15,7 +15,7 @@ export type StrapiVersion = z.infer<typeof StrapiVersionSchema>;
 export const CredentialsSchema = z.discriminatedUnion('kind', [
   z.object({
     kind: z.literal('admin'),
-    email: z.string().email(),
+    email: z.email(),
     password: z.string().min(1),
   }),
   z.object({
@@ -27,7 +27,7 @@ export type Credentials = z.infer<typeof CredentialsSchema>;
 
 export const ConnectionSchema = z.object({
   /** Base URL of the Strapi instance, e.g. https://cms.example.com */
-  url: z.string().url(),
+  url: z.url(),
   credentials: CredentialsSchema,
   /** Skip TLS verification. Development only — never persisted to a profile. */
   insecureTls: z.boolean().default(false),

@@ -17,7 +17,7 @@ export const ManifestSchema = z.object({
     tool: z.literal('strapi-remote-backup-pro'),
     version: z.string(),
   }),
-  createdAt: z.string().datetime(),
+  createdAt: z.iso.datetime(),
   label: z.string().optional(),
 
   source: z.object({

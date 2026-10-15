@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.11'
+          node-version: '22.19'
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
@@ -33,7 +33,7 @@ jobs:
           dotnet-version: '10.0.x'
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.11'
+          node-version: '22.19'
       # The installer bundles a pinned Node runtime. An installer that assumes
       # the user already has Node forfeits the reason for shipping a native app
       # at all — see docs/adr/0004-sidecar-contract.md.

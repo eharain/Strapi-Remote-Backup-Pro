@@ -15,5 +15,5 @@
     "sandbox:down": "docker compose -f tools/sandbox/docker-compose.yml down -v",
     "schema:emit": "npm run schema:emit -w strapi-remote-backup-pro"
   },
-  "engines": { "node": ">=20.11" }
+  "engines": { "node": ">=22.19" }
 }

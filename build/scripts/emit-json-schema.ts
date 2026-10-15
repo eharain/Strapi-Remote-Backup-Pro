@@ -11,8 +11,7 @@
 import { mkdir, readdir, rm, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { zodToJsonSchema } from 'zod-to-json-schema';
-import type { ZodTypeAny } from 'zod';
+import { z } from 'zod';
 import * as contracts from '../../apps/core/src/contracts/index.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -25,8 +24,8 @@ const outputDir = resolve(here, '../../docs/api/schema');
  * stops covering a new contract, which is exactly the drift this pipeline exists
  * to prevent.
  */
-function exportedSchemas(): Array<{ name: string; schema: ZodTypeAny }> {
-  const found: Array<{ name: string; schema: ZodTypeAny }> = [];
+function exportedSchemas(): Array<{ name: string; schema: z.ZodType }> {
+  const found: Array<{ name: string; schema: z.ZodType }> = [];
   for (const [exportName, value] of Object.entries(contracts)) {
     if (!exportName.endsWith('Schema')) continue;
     if (!isZodSchema(value)) continue;
@@ -35,13 +34,8 @@ function exportedSchemas(): Array<{ name: string; schema: ZodTypeAny }> {
   return found.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function isZodSchema(value: unknown): value is ZodTypeAny {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    '_def' in value &&
-    typeof (value as { safeParse?: unknown }).safeParse === 'function'
-  );
+function isZodSchema(value: unknown): value is z.ZodType {
+  return value instanceof z.ZodType;
 }
 
 async function main(): Promise<void> {
@@ -59,13 +53,28 @@ async function main(): Promise<void> {
   }
 
   for (const { name, schema } of schemas) {
-    const json = zodToJsonSchema(schema, {
-      name,
+    const { $schema, ...definition } = z.toJSONSchema(schema, {
+      target: 'draft-07',
+      // What a caller may send: a field with a default is optional, as it is to
+      // the parser.
+      io: 'input',
       // Inlined rather than $ref'd into a shared definitions block: each file is
       // meant to be readable on its own in a pull request.
-      $refStrategy: 'none',
-      target: 'jsonSchema7',
+      reused: 'inline',
+      override: ({ zodSchema, jsonSchema }) => {
+        const def = zodSchema._zod.def;
+        // Objects stay closed. The parser drops unknown keys rather than keeping
+        // them, so a generated DTO has no business carrying an overflow bag.
+        if (def.type === 'object' && jsonSchema.additionalProperties === undefined) {
+          jsonSchema.additionalProperties = false;
+        }
+        // For z.email(), z.iso.datetime() and friends zod writes its own regex
+        // for the format next to `format`. The format already says it, and the
+        // regex would only be one more thing for the C# side to disagree with.
+        if ('format' in def && jsonSchema.format !== undefined) delete jsonSchema.pattern;
+      },
     });
+    const json = { $ref: `#/definitions/${name}`, definitions: { [name]: definition }, $schema };
     // Two-space indent and a trailing newline, so `git diff --exit-code` in CI
     // compares content rather than formatting.
     await writeFile(join(outputDir, `${name}.json`), `${JSON.stringify(json, null, 2)}\n`, 'utf8');

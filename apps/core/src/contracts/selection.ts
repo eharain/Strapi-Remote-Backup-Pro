@@ -24,7 +24,7 @@ export const SelectionSchema = z.object({
   /** Locale codes to include. Empty means all locales. */
   locales: z.array(z.string()).default([]),
   /** Only records modified since this instant — the basis of incremental runs. */
-  modifiedSince: z.string().datetime().optional(),
+  modifiedSince: z.iso.datetime().optional(),
 });
 export type Selection = z.infer<typeof SelectionSchema>;
 

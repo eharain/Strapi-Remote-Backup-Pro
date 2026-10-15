@@ -48,7 +48,7 @@ export const JobEventSchema = z.discriminatedUnion('type', [
   }),
   z.object({ type: z.literal('log'), level: z.enum(['debug', 'info', 'warn', 'error']), message: z.string() }),
   z.object({ type: z.literal('warning'), message: z.string(), contentType: z.string().optional() }),
-  z.object({ type: z.literal('done'), state: JobStateSchema, summary: z.unknown() }),
+  z.object({ type: z.literal('done'), state: JobStateSchema, summary: z.unknown().optional() }),
 ]);
 export type JobEvent = z.infer<typeof JobEventSchema>;
 
@@ -56,8 +56,8 @@ export const JobSchema = z.object({
   id: z.string(),
   kind: JobKindSchema,
   state: JobStateSchema,
-  startedAt: z.string().datetime().optional(),
-  finishedAt: z.string().datetime().optional(),
+  startedAt: z.iso.datetime().optional(),
+  finishedAt: z.iso.datetime().optional(),
   error: z.string().optional(),
 });
 export type Job = z.infer<typeof JobSchema>;
@@ -67,8 +67,8 @@ export const RunReportSchema = z.object({
   jobId: z.string(),
   kind: JobKindSchema,
   state: JobStateSchema,
-  startedAt: z.string().datetime(),
-  finishedAt: z.string().datetime(),
+  startedAt: z.iso.datetime(),
+  finishedAt: z.iso.datetime(),
   durationMs: z.number(),
   recordsByType: z.record(z.string(), z.number()).default({}),
   mediaFiles: z.number().default(0),

@@ -37,33 +37,36 @@
           "type": "number"
         },
         "recordsByType": {
+          "default": {},
           "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
           "additionalProperties": {
             "type": "number"
-          },
-          "default": {}
+          }
         },
         "mediaFiles": {
-          "type": "number",
-          "default": 0
+          "default": 0,
+          "type": "number"
         },
         "bytesWritten": {
-          "type": "number",
-          "default": 0
+          "default": 0,
+          "type": "number"
         },
         "warnings": {
+          "default": [],
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "default": []
+          }
         },
         "errors": {
+          "default": [],
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "default": []
+          }
         }
       },
       "required": [

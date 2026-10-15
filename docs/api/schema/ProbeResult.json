@@ -24,11 +24,11 @@
           "type": "boolean"
         },
         "warnings": {
+          "default": [],
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "default": []
+          }
         }
       },
       "required": [

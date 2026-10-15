@@ -5,50 +5,53 @@
       "type": "object",
       "properties": {
         "contentTypes": {
+          "default": [],
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "default": []
+          }
         },
         "documentIds": {
+          "default": {},
           "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
           "additionalProperties": {
             "type": "array",
             "items": {
               "type": "string"
             }
-          },
-          "default": {}
+          }
         },
         "depth": {
+          "default": 1,
           "type": "integer",
           "minimum": 0,
-          "maximum": 10,
-          "default": 1
+          "maximum": 10
         },
         "followUnselectedTypes": {
-          "type": "boolean",
-          "default": true
+          "default": true,
+          "type": "boolean"
         },
         "includeMedia": {
-          "type": "boolean",
-          "default": true
+          "default": true,
+          "type": "boolean"
         },
         "includeSchemas": {
-          "type": "boolean",
-          "default": true
+          "default": true,
+          "type": "boolean"
         },
         "includeDrafts": {
-          "type": "boolean",
-          "default": true
+          "default": true,
+          "type": "boolean"
         },
         "locales": {
+          "default": [],
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "default": []
+          }
         },
         "modifiedSince": {
           "type": "string",

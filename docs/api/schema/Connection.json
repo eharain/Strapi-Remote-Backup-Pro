@@ -9,7 +9,7 @@
           "format": "uri"
         },
         "credentials": {
-          "anyOf": [
+          "oneOf": [
             {
               "type": "object",
               "properties": {
@@ -54,19 +54,20 @@
           ]
         },
         "insecureTls": {
-          "type": "boolean",
-          "default": false
+          "default": false,
+          "type": "boolean"
         },
         "requestTimeoutMs": {
+          "default": 60000,
           "type": "integer",
           "exclusiveMinimum": 0,
-          "default": 60000
+          "maximum": 9007199254740991
         },
         "concurrency": {
+          "default": 4,
           "type": "integer",
           "minimum": 1,
-          "maximum": 32,
-          "default": 4
+          "maximum": 32
         }
       },
       "required": [
