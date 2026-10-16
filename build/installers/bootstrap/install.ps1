@@ -65,7 +65,7 @@ $ProgressPreference = 'SilentlyContinue'
 # tested is a bug report nobody can reproduce.
 $NodeVersion = '22.21.1'
 
-$Pkg     = 'strapi-remote-backup-pro'
+$Pkg     = '@tech-style/strapi-remote-backup-pro'
 $Product = 'Strapi Remote Backup Pro'
 $Repo    = 'eharain/strapi-remote-backup-pro'
 $Support = 'https://tech-style.co/products.html#remote-backup'
@@ -272,7 +272,8 @@ try {
     $spec = if ($Version -eq 'latest') { $Pkg } else { "$Pkg@$Version" }
     if (-not (Invoke-Npm @('install', '--prefix', $App, '--no-audit', '--no-fund', $spec))) { return '' }
 
-    return (Resolve-Entry (Join-Path $App "node_modules\$Pkg\bin\strapi-backup.js"))
+    # $Pkg is scoped (@tech-style/...), so its slash becomes a path separator.
+    return (Resolve-Entry (Join-Path $App ("node_modules\" + ($Pkg -replace '/', '\') + "\bin\strapi-backup.js")))
   }
 
   function Install-FromSource {

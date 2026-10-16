@@ -27,7 +27,7 @@ Restore is selective: pick content types, pick records, pick how deep to follow 
 **Command line** — for developers, CI, and cron:
 
 ```bash
-npx strapi-remote-backup-pro backup \
+npx @tech-style/strapi-remote-backup-pro backup \
   --url https://cms.example.com \
   --email admin@example.com \
   --out ./backups

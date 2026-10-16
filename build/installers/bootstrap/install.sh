@@ -32,7 +32,7 @@ set -eu
 # tested is a bug report nobody can reproduce.
 NODE_VERSION="22.21.1"
 
-PKG="strapi-remote-backup-pro"
+PKG="@tech-style/strapi-remote-backup-pro"
 PRODUCT="Strapi Remote Backup Pro"
 REPO="eharain/strapi-remote-backup-pro"
 SUPPORT="https://tech-style.co/products.html#remote-backup"

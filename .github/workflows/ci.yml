@@ -65,6 +65,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run sandbox:up
-      - run: npm run test:integration -w strapi-remote-backup-pro
+      - run: npm run test:integration -w @tech-style/strapi-remote-backup-pro
       - if: always()
         run: npm run sandbox:down

@@ -39,7 +39,7 @@ Run from the repository root. Measured 2026-08-27, not remembered.
 | Contract emit | `npm run schema:emit` | **pass** — 17 schemas, byte-idempotent |
 | Desktop build | `dotnet build apps/desktop/StrapiBackup.sln -c Release` | **pass**, 0 warnings |
 | Desktop tests | `dotnet test apps/desktop/StrapiBackup.sln -c Release` | passes vacuously — no tests exist |
-| Integration | `npm run test:integration -w strapi-remote-backup-pro` | **pass** — 7 tests against two live v5 instances; skips without credentials |
+| Integration | `npm run test:integration -w @tech-style/strapi-remote-backup-pro` | **pass** — 7 tests against two live v5 instances; skips without credentials |
 
 All four CI jobs in [.github/workflows/ci.yml](../../.github/workflows/ci.yml)
 are green on a clean checkout. M0 is cleared.

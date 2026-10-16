@@ -16,7 +16,7 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: npm ci
       - run: npm run build
-      - run: npm publish -w strapi-remote-backup-pro
+      - run: npm publish -w @tech-style/strapi-remote-backup-pro
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

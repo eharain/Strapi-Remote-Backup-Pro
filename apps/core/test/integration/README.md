@@ -12,7 +12,7 @@ export SRBP_SOURCE_URL=http://127.0.0.1:13337
 export SRBP_TARGET_URL=http://127.0.0.1:13338
 export SRBP_EMAIL=admin@example.com
 export SRBP_PASSWORD='...'
-npm run test:integration -w strapi-remote-backup-pro
+npm run test:integration -w @tech-style/strapi-remote-backup-pro
 ```
 
 Without `SRBP_EMAIL` and `SRBP_PASSWORD` the suite skips rather than fails, so

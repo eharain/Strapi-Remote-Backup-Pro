@@ -12,7 +12,11 @@
  * identify what produced a file it has never seen before.
  */
 export const PRODUCT = {
-  /** npm package name, and the identifier written into archive manifests. */
+  /**
+   * Identifier written into archive manifests, fixed by the archive format.
+   * The npm package is `@tech-style/strapi-remote-backup-pro`; this stays
+   * unscoped so every archive already written still validates.
+   */
   id: 'strapi-remote-backup-pro',
   name: 'Strapi Remote Backup Pro',
   version: '0.1.0',
@@ -34,7 +38,7 @@ export const PRODUCT = {
   links: {
     product: 'https://tech-style.co/products.html#remote-backup',
     repository: 'https://github.com/eharain/strapi-remote-backup-pro',
-    npm: 'https://www.npmjs.com/package/strapi-remote-backup-pro',
+    npm: 'https://www.npmjs.com/package/@tech-style/strapi-remote-backup-pro',
     issues: 'https://github.com/eharain/strapi-remote-backup-pro/issues',
   },
 } as const;

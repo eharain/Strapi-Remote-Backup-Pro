@@ -8,7 +8,7 @@ does not accept it.
 | Channel | What ships | Status |
 |---|---|---|
 | GitHub | source, issues, releases | public, `main` pushed |
-| npm | `strapi-remote-backup-pro` — the engine and CLI | not published |
+| npm | `@tech-style/strapi-remote-backup-pro` — the engine and CLI | not published |
 | One-command installer | [`build/installers/bootstrap`](../../build/installers/bootstrap/) — `curl \| sh` and `irm \| iex` | written, tested on Windows |
 | GitHub Releases | desktop installers per platform | needs the bundling step |
 | tech-style.co | product page and download links | page drafted |
@@ -88,14 +88,14 @@ Publishing is automated by [release.yml](../../.github/workflows/release.yml) on
 `v*` tag, using the `NPM_TOKEN` repository secret.
 
 ```bash
-npm version minor -w strapi-remote-backup-pro
+npm version minor -w @tech-style/strapi-remote-backup-pro
 git push --follow-tags
 ```
 
 Before the first publish:
 
 - Confirm the name is free on npm
-- Check `npm publish --dry-run -w strapi-remote-backup-pro` includes `dist`,
+- Check `npm publish --dry-run -w @tech-style/strapi-remote-backup-pro` includes `dist`,
   `bin`, `README.md`, `LICENSE`, `NOTICE`, and `THIRD-PARTY-NOTICES.md`
 - Publishing under MIT is irreversible for that version. See
   [legal/licensing.md](../legal/licensing.md).

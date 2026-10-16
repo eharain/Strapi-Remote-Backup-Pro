@@ -1,10 +1,10 @@
-# strapi-remote-backup-pro
+# @tech-style/strapi-remote-backup-pro
 
 Back up and restore any Strapi v4 or v5 instance **remotely, without installing a
 plugin in it**. Admin credentials are the only requirement.
 
 ```bash
-npx strapi-remote-backup-pro backup \
+npx @tech-style/strapi-remote-backup-pro backup \
   --url https://cms.example.com \
   --email admin@example.com \
   --out ./backups
@@ -27,7 +27,7 @@ nothing to uninstall afterwards.
 ## Install
 
 ```bash
-npm install -g strapi-remote-backup-pro    # or use npx
+npm install -g @tech-style/strapi-remote-backup-pro    # or use npx
 ```
 
 Requires Node.js 22.19 or later.

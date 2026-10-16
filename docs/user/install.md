@@ -102,7 +102,7 @@ If you already have Node 22.19 or later and just want the command line, the
 installer is unnecessary:
 
 ```bash
-npx strapi-remote-backup-pro backup --url https://cms.example.com --email you@example.com
+npx @tech-style/strapi-remote-backup-pro backup --url https://cms.example.com --email you@example.com
 ```
 
 To work on the code instead, see [getting started](../dev/getting-started.md).

@@ -1,5 +1,5 @@
 {
-  "name": "strapi-remote-backup-pro",
+  "name": "@tech-style/strapi-remote-backup-pro",
   "version": "0.1.0",
   "description": "Back up and restore any Strapi v4/v5 instance remotely over the admin API — no plugin installed in Strapi. CLI, local API, and pluggable backup destinations.",
   "license": "MIT",

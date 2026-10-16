@@ -44,7 +44,7 @@ archive format needs the sandbox:
 
 ```bash
 npm run sandbox:up        # Strapi v5 on :1337, v4 on :1338
-npm run test:integration -w strapi-remote-backup-pro
+npm run test:integration -w @tech-style/strapi-remote-backup-pro
 ```
 
 The seed schema is deliberately awkward — circular relations, dynamic zones, nested
